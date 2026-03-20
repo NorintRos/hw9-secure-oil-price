@@ -4,8 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { engine } = require("express-handlebars");
+const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 var indexRouter = require('./routes/index');
+const apiRouter = require("./routes/api");
 
 var app = express();
 
@@ -38,7 +41,22 @@ app.use((req, res, next) => {
   next();
 });
 
+// ──── LAYER 2 — CORS ────
+app.use(cors({
+  origin: "http://localhost:3000",
+}));
+
+// ──── LAYER 3 — Rate Limiting ────
+app.use(rateLimit({
+  windowMs: 60000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests — try again after 1 minute." },
+}));
+
 app.use('/', indexRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
