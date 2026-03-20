@@ -9,6 +9,7 @@ const rateLimit = require("express-rate-limit");
 
 var indexRouter = require('./routes/index');
 const apiRouter = require("./routes/api");
+const dashboardRouter = require("./routes/dashboard");
 
 var app = express();
 
@@ -57,6 +58,7 @@ app.use(rateLimit({
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
+app.use('/', dashboardRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
