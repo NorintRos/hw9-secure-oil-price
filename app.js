@@ -1,17 +1,18 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config();
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const { engine } = require("express-handlebars");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 const apiRouter = require("./routes/api");
 const dashboardRouter = require("./routes/dashboard");
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.engine("hbs", engine({
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
   if (!allowedIPs.includes(req.ip)) {
     return res.status(403).render("error", {
       message: "403 — Your IP is not allowed.",
+      title: "Error",
     });
   }
   next();
@@ -73,7 +75,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', { title: 'Error' });
 });
 
 module.exports = app;

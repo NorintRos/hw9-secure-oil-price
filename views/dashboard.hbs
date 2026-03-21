@@ -1,0 +1,29 @@
+<div class="card">
+  <h1>{{market}}</h1>
+  <p class="meta">Last updated: {{lastUpdated}} | Currency: {{currency}}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Change</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each prices}}
+      <tr>
+        <td>{{this.symbol}}</td>
+        <td>{{this.name}}</td>
+        <td>{{formatPrice this.price}}</td>
+        <td class="{{#if (isPositive this.change)}}positive{{else}}negative{{/if}}">
+          {{#if (isPositive this.change)}}&#9650; +{{formatPrice this.change}}{{else}}&#9660; {{formatPrice this.change}}{{/if}}
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <p><a class="logout-link" href="/logout">Logout</a></p>
+</div>

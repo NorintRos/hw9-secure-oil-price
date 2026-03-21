@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const BEARER_TOKEN = "energy-api-secret-2026";
+const BEARER_TOKEN = process.env.BEARER_TOKEN;
 
 const oilPriceData = {
   market: "Global Energy Exchange",

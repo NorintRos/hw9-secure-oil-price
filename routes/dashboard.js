@@ -19,7 +19,7 @@ const oilPriceData = {
 
 // Basic Auth middleware
 const requireBasicAuth = basicAuth({
-  users: { admin: "oilprices" },
+  users: { [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASS },
   challenge: true,
   realm: "Energy Dashboard",
 });
@@ -50,9 +50,9 @@ router.get("/logout", (req, res) => {
   }
   if (req.headers.authorization) {
     res.set("WWW-Authenticate", 'Basic realm="Energy Dashboard"');
-    return res.status(401).render("logout");
+    return res.status(401).render("logout", { title: "Logged Out" });
   }
-  res.render("logout");
+  res.render("logout", { title: "Logged Out" });
 });
 
 module.exports = router;
