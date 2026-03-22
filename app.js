@@ -58,6 +58,9 @@ app.use(cors({
   origin: "http://localhost:3000",
 }));
 
+// Static assets (before rate limiter so CSS/JS loads on error pages)
+app.use(express.static(path.join(__dirname, 'public')));
+
 // ──── LAYER 3 — Rate Limiting ────
 app.use(rateLimit({
   windowMs: 60000,
@@ -68,8 +71,6 @@ app.use(rateLimit({
     res.status(429).render("ratelimit", { title: "Too Many Requests" });
   },
 }));
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
