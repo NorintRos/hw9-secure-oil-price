@@ -1,4 +1,13 @@
 require('dotenv').config();
+
+// Validate required environment variables
+const requiredEnv = ['BEARER_TOKEN', 'BASIC_AUTH_USER', 'BASIC_AUTH_PASS'];
+for (const key of requiredEnv) {
+  if (!process.env[key]) {
+    throw new Error(`Missing required environment variable: ${key}`);
+  }
+}
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -30,7 +39,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // ──── LAYER 1 — IP Filtering ────
 const allowedIPs = ["127.0.0.1", "::1", "::ffff:127.0.0.1"];
@@ -58,17 +66,19 @@ app.use(rateLimit({
   message: { error: "Too many requests — try again after 1 minute." },
 }));
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/', dashboardRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
