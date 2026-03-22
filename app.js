@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 // Validate required environment variables
-const requiredEnv = ['BEARER_TOKEN', 'BASIC_AUTH_USER', 'BASIC_AUTH_PASS'];
+const requiredEnv = ['JWT_SECRET', 'BASIC_AUTH_USER', 'BASIC_AUTH_PASS'];
 for (const key of requiredEnv) {
   if (!process.env[key]) {
     throw new Error(`Missing required environment variable: ${key}`);
