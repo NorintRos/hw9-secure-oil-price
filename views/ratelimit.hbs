@@ -1,0 +1,27 @@
+<article class="narrow center">
+  <div class="status-icon warning">&#9888;</div>
+  <h1>Too many requests</h1>
+  <p>You've exceeded the rate limit. Try again in <strong id="countdown">60</strong> seconds.</p>
+  <div class="progress-bar">
+    <div class="progress-bar-fill" id="progressFill" style="width: 100%"></div>
+  </div>
+  <p><a href="/dashboard" id="retryLink" class="link-disabled">Retry &rarr;</a></p>
+</article>
+
+<script>
+  const el = document.getElementById("countdown");
+  const link = document.getElementById("retryLink");
+  const fill = document.getElementById("progressFill");
+  let seconds = 60;
+  const timer = setInterval(() => {
+    seconds--;
+    el.textContent = seconds;
+    fill.style.width = ((seconds / 60) * 100) + "%";
+    if (seconds <= 0) {
+      clearInterval(timer);
+      el.textContent = "0";
+      fill.style.width = "0%";
+      link.classList.remove("link-disabled");
+    }
+  }, 1000);
+</script>

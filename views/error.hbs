@@ -1,7 +1,6 @@
-<div class="card center">
+<article class="narrow center">
+  <div class="status-icon error-icon">!</div>
   <h1>{{message}}</h1>
-  {{#if error.stack}}
-    <pre>{{error.stack}}</pre>
-  {{/if}}
-  <p><a href="/dashboard">Back to Dashboard</a></p>
-</div>
+  {{#if error.stack}}<pre>{{error.stack}}</pre>{{/if}}
+  <p><a href="/login">Back to login &rarr;</a></p>
+</article>

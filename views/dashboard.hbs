@@ -1,29 +1,26 @@
-<div class="card">
-  <h1>{{market}}</h1>
-  <p class="meta">Last updated: {{lastUpdated}} | Currency: {{currency}}</p>
+<article>
+  <header>
+    <h1>{{market}}</h1>
+    <p><time>{{lastUpdated}}</time> &mdash; {{currency}}</p>
+  </header>
 
   <table>
     <thead>
-      <tr>
-        <th>Symbol</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Change</th>
-      </tr>
+      <tr><th>Ticker</th><th>Commodity</th><th class="r">Price</th><th class="r">Change</th></tr>
     </thead>
     <tbody>
       {{#each prices}}
       <tr>
-        <td>{{this.symbol}}</td>
+        <td><strong>{{this.symbol}}</strong></td>
         <td>{{this.name}}</td>
-        <td>{{formatPrice this.price}}</td>
-        <td class="{{#if (isPositive this.change)}}positive{{else}}negative{{/if}}">
-          {{#if (isPositive this.change)}}&#9650; +{{formatPrice this.change}}{{else}}&#9660; {{formatPrice this.change}}{{/if}}
-        </td>
+        <td class="r">${{formatPrice this.price}}</td>
+        <td class="r {{#if (isPositive this.change)}}up{{else}}dn{{/if}}"><span class="change-arrow">{{#if (isPositive this.change)}}&#9650;{{else}}&#9660;{{/if}}</span>{{#if (isPositive this.change)}}+{{/if}}{{formatPrice this.change}}</td>
       </tr>
       {{/each}}
     </tbody>
   </table>
 
-  <p><a class="logout-link" href="/logout">Logout</a></p>
-</div>
+  <footer>
+    <a href="/logout">Log out</a>
+  </footer>
+</article>

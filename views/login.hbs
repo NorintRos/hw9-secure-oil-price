@@ -1,0 +1,55 @@
+<article class="narrow">
+  <div class="accent-bar"></div>
+  <h1>Energy Terminal</h1>
+  <p>Sign in to access the dashboard.</p>
+
+  <form id="loginForm" autocomplete="off">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required autofocus autocomplete="username" spellcheck="false">
+
+    <label for="password">Password</label>
+    <div class="pw-wrap">
+      <input type="password" id="password" name="password" required autocomplete="current-password">
+      <button type="button" class="pw-toggle" id="pwToggle">Show</button>
+    </div>
+
+    <p id="loginError" class="error" aria-live="polite"></p>
+    <button type="submit">Sign in</button>
+  </form>
+</article>
+
+<script>
+  document.getElementById("pwToggle").addEventListener("click", (e) => {
+    const pw = document.getElementById("password");
+    const show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    e.target.textContent = show ? "Hide" : "Show";
+  });
+
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    const errorEl = document.getElementById("loginError");
+    const btn = e.target.querySelector('button[type="submit"]');
+
+    errorEl.textContent = "";
+    btn.disabled = true;
+
+    try {
+      const res = await fetch("/dashboard", {
+        headers: { "Authorization": "Basic " + btoa(user + ":" + pass) }
+      });
+      if (res.ok) {
+        window.location.href = "http://" + encodeURIComponent(user) + ":" + encodeURIComponent(pass) + "@" + window.location.host + "/dashboard";
+      } else {
+        errorEl.textContent = "Invalid credentials.";
+        btn.disabled = false;
+      }
+    } catch (err) {
+      console.error(err);
+      errorEl.textContent = "Connection failed.";
+      btn.disabled = false;
+    }
+  });
+</script>

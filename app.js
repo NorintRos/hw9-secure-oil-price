@@ -22,6 +22,7 @@ const apiRouter = require("./routes/api");
 const dashboardRouter = require("./routes/dashboard");
 
 const app = express();
+app.disable('x-powered-by');
 
 // view engine setup
 app.engine("hbs", engine({
@@ -63,7 +64,9 @@ app.use(rateLimit({
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: "Too many requests — try again after 1 minute." },
+  handler: (req, res) => {
+    res.status(429).render("ratelimit", { title: "Too Many Requests" });
+  },
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
